@@ -232,7 +232,7 @@ func spawn_4x4_enemies(event: Dictionary):
 	var scroll_for_slot = _scroll_for_slot(enemy_slot)
 
 	var base_pos = Vector2(
-		float(event.get("screen_x", 0)) + 6.0,
+		float(event.get("screen_x", 0)) -24.0,
 		float(event.get("screen_y", 0)) + 3.0 - 28.0)
 
 	# Offsety dla 4x4 gridu (24x28px)
@@ -408,8 +408,8 @@ func spawn_ground2_bottom(event: Dictionary):
 
 	var enemy_slot = int(event.get("enemy_slot", 75))
 	var spawn_pos = Vector2(
-		float(event.get("screen_x", 0)) + 6.0,
-		float(event.get("screen_y", 0)) + 3.0)
+		float(event.get("screen_x", 0)),
+		float(event.get("screen_y", 0)))
 
 	if small_enemy_adjust and enemy.esize == 0:
 		spawn_pos.x -= 10

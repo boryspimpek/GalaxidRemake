@@ -24,6 +24,7 @@ tur = [0, 0, 78]
 path_speed = 0.0
 
 [node name="Visual" parent="." index="0" unique_id=1405638014]
+visible = false
 scale = Vector2(0.06, 0.06)
 texture = ExtResource("2_tex")
 
