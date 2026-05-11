@@ -309,7 +309,7 @@ func spawn_top_enemy(event: Dictionary):
 
 	var enemy_slot = int(event.get("enemy_slot", 50))
 	var spawn_pos = Vector2(
-		float(event.get("screen_x", 0)+18.0),
+		float(event.get("screen_x", 0)),
 		float(event.get("screen_y", 0)))
 
 	_setup_enemy(enemy, enemy_id, spawn_pos,
