@@ -80,11 +80,13 @@ func _physics_process(_delta):
 	weapon_system.set_firing(Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT))
 
 func _clamp_to_screen():
-	var screen_size = get_viewport_rect().size
 	var shape = $CollisionShape2D.shape
 	var margin: float = shape.radius
-	position.x = clamp(position.x, margin, screen_size.x - margin)
-	position.y = clamp(position.y, margin, screen_size.y - margin)
+	var cam = get_viewport().get_camera_2d()
+	var cam_x = cam.position.x if cam else 180.0
+	# Clamp do widocznego pola gry (288px) względem kamery
+	position.x = clamp(position.x, cam_x - 180.0 + margin, cam_x - 180.0 + 288.0 - margin)
+	position.y = clamp(position.y, margin, 200.0 - margin)
 
 # ============================================================================
 # 3. DEBUG

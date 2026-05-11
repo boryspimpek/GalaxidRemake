@@ -13,6 +13,9 @@ script = ExtResource("3_level_manager")
 [node name="LevelRuler" type="Node2D" parent="LevelMap" unique_id=2100000002]
 script = ExtResource("5_levelruler")
 
+[node name="Camera2D" type="Camera2D" parent="." unique_id=3000000001]
+position = Vector2(180, 100)
+
 [node name="Player" parent="." unique_id=1834704228 instance=ExtResource("1_c6gwx")]
 position = Vector2(158, 186)
 
