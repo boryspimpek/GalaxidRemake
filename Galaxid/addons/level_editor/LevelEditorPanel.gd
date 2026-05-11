@@ -2,10 +2,11 @@
 extends Control
 
 const SETTING := "game/debug/start_dist"
-const GAME_W   := 288
-const LABEL_W  := 60
-const BAR_H    := 12
-const SPAWN_R  := 10.0
+const GAME_W    := 288
+const LABEL_W   := 60
+const H_MARGIN  := 60
+const BAR_H     := 12
+const SPAWN_R   := 10.0
 const MIN_SCALE := 1
 const MAX_SCALE := 10.0
 
@@ -300,7 +301,7 @@ func _rebuild_draw_data() -> void:
 		var y         := _dist_to_y(dist)
 
 		if ev.get("category", "") == "spawn":
-			var sx := LABEL_W + float(ev.get("screen_x", 0))
+			var sx := LABEL_W + H_MARGIN + float(ev.get("screen_x", 0))
 			_event_draw.append({"spawn": true, "cx": sx, "cy": y, "idx": i})
 		else:
 			if not ctx_count.has(dist):
@@ -315,7 +316,7 @@ func _rebuild_draw_data() -> void:
 			})
 
 	_timeline.custom_minimum_size = Vector2(
-		LABEL_W + GAME_W + 20.0,
+		LABEL_W + GAME_W + H_MARGIN * 2,
 		_max_dist * scale + 100.0
 	)
 	_timeline.queue_redraw()
@@ -329,8 +330,8 @@ func _draw_tl() -> void:
 	var scale := _spin_scale.value
 
 	_timeline.draw_rect(Rect2(Vector2.ZERO, sz), Color(0.13, 0.13, 0.13))
-	_timeline.draw_line(Vector2(LABEL_W, 0),          Vector2(LABEL_W, sz.y),          Color(0.35, 0.35, 0.35))
-	_timeline.draw_line(Vector2(LABEL_W + GAME_W, 0), Vector2(LABEL_W + GAME_W, sz.y), Color(0.35, 0.35, 0.35))
+	_timeline.draw_line(Vector2(LABEL_W, 0),                         Vector2(LABEL_W, sz.y),                         Color(0.35, 0.35, 0.35))
+	_timeline.draw_line(Vector2(LABEL_W + H_MARGIN + GAME_W, 0), Vector2(LABEL_W + H_MARGIN + GAME_W, sz.y), Color(0.35, 0.35, 0.35))
 
 	var step := _grid_step(scale)
 	var d    := 0
