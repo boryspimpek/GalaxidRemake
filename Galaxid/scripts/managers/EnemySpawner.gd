@@ -15,6 +15,9 @@ var enemies_active: bool = false
 var level_enemy_frequency: int = 96
 var level_enemies: Array = []
 
+# Offset X dla wszystkich wrogów (np. dla przesunięcia mapy)
+var x_offset: float = 24
+
 func _init(p_level_manager: Node2D):
 	level_manager = p_level_manager
 
@@ -89,16 +92,7 @@ func spawn_free_enemy(event: Dictionary):
 		float(event.get("vel_x", float(enemy.xmove))),
 		float(event.get("vel_y", float(enemy.ymove))))
 
-	enemy.name            = "Enemy_%d" % enemy_id
-	enemy.global_position = spawn_pos
-	enemy.velocity        = vel
-	enemy.fixed_move_y    = 0
-	enemy.scroll_y        = 0
-	enemy.enemy_slot      = 0
-	enemy.event_type      = 0
-	enemy.link_num        = int(event.get("link_num", 0))
-	enemy.enemy_id        = enemy_id
-	enemy.projectile_scene = GameConstants.enemy_projectile_scene
+	_setup_enemy(enemy, enemy_id, spawn_pos, vel, 0, 0, 0, int(event.get("link_num", 0)), 0)
 
 	enemy.projectile_spawned.connect(level_manager._on_enemy_projectile_spawned)
 	level_manager.add_child(enemy)
@@ -137,6 +131,7 @@ func spawn_group_enemy(event: Dictionary):
 	var base_pos = Vector2(
 		float(event.get("screen_x", 0)),
 		float(event.get("screen_y", 0)))
+	base_pos.x += x_offset
 	var link_num = int(event.get("link_num", 0))
 
 	var group_scene = _scene_for_enemy(group_id)
@@ -180,6 +175,7 @@ func spawn_formation(event: Dictionary):
 	var base_pos = Vector2(
 		float(event.get("screen_x", 0)),
 		float(event.get("screen_y", 0)))
+	base_pos.x += x_offset
 	var link_num = int(event.get("link_num", 0))
 
 	var formation_scene = _scene_for_enemy(formation_id)
@@ -280,16 +276,7 @@ func spawn_free_4x4(event: Dictionary):
 			float(event.get("vel_x", float(enemy.xmove))),
 			float(event.get("vel_y", float(enemy.ymove))))
 
-		enemy.name            = "Enemy_%d" % eid
-		enemy.global_position = spawn_pos
-		enemy.velocity        = vel
-		enemy.fixed_move_y    = 0
-		enemy.scroll_y        = 0
-		enemy.enemy_slot      = 0
-		enemy.event_type      = 0
-		enemy.link_num        = int(event.get("link_num", 0))
-		enemy.enemy_id        = eid
-		enemy.projectile_scene = GameConstants.enemy_projectile_scene
+		_setup_enemy(enemy, eid, spawn_pos, vel, 0, 0, 0, int(event.get("link_num", 0)), 0)
 
 		enemy.projectile_spawned.connect(level_manager._on_enemy_projectile_spawned)
 		level_manager.add_child(enemy)
@@ -467,7 +454,7 @@ func _setup_enemy(enemy: Node2D, enemy_id: int, spawn_position: Vector2,
 		velocity: Vector2, fixed_move_y: int, scroll_y: int,
 		event_type: int, link_num: int, enemy_slot: int) -> void:
 	enemy.name           = "Enemy_%d" % enemy_id
-	enemy.global_position = spawn_position
+	enemy.global_position = spawn_position + Vector2(x_offset, 0)
 	enemy.velocity       = velocity
 	enemy.fixed_move_y   = fixed_move_y
 	enemy.scroll_y       = scroll_y
