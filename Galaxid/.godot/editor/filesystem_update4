@@ -5,3 +5,4 @@ res://scripts/managers/EventProcessor.gd
 res://scenes/enemies/Enemy_024.tscn
 res://scenes/world/LevelManager.gd
 res://scenes/world/World.tscn
+res://scenes/player/player.gd
