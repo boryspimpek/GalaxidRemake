@@ -3,3 +3,14 @@ res://scripts/core/GameConstants.gd
 res://scenes/enemy_projectile/EnemyProjectile.gd
 res://scenes/enemies/Enemy_005.tscn
 res://scenes/enemies/Enemy_012.tscn
+res://scenes/world/World.tscn
+res://scenes/enemy/Enemy.gd
+res://scenes/enemies/Enemy_024.tscn
+res://scenes/enemies/Enemy_025.tscn
+res://scenes/enemies/Enemy_006.tscn
+res://scenes/enemies/Enemy_007.tscn
+res://scenes/enemies/Enemy_008.tscn
+res://scenes/enemies/Enemy_009.tscn
+res://scenes/enemies/Enemy_013.tscn
+res://scenes/enemies/Enemy_014.tscn
+res://scenes/enemies/Enemy_017.tscn

@@ -9,5 +9,5 @@ esize = 1
 ymove = 1
 
 [node name="Visual" parent="." index="0" unique_id=1405638014]
-scale = Vector2(0.068, 0.05)
+scale = Vector2(2.11, 2.11)
 texture = ExtResource("2_tex")

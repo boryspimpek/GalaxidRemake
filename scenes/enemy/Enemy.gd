@@ -16,9 +16,11 @@ var enemy_slot: int = 0
 var velocity: Vector2 = Vector2(0, 0)
 var fixed_move_y: int = 0
 var scroll_y: int = 0
+
 # Ruch bazowy (px/klatkę Tyrian) — ustawiany przez scenę wroga
 @export var xmove: int = 0
 @export var ymove: int = 0
+
 # Pozycja domyślna dla random spawn
 @export var startx: int = 0
 @export var starty: int = 0
