@@ -284,7 +284,7 @@ func _setup_enemy(enemy: Node2D, enemy_id: int, spawn_position: Vector2,
 		velocity: Vector2, fixed_move_y: int, scroll_y: int,
 		event_type: int, link_num: int, enemy_slot: int) -> void:
 	enemy.name           = "Enemy_%d" % enemy_id
-	enemy.global_position = spawn_position
+	enemy.global_position = Vector2(spawn_position.x * GameConstants.SCALE_FACTOR, spawn_position.y * GameConstants.SCALE_FACTOR)
 	enemy.velocity       = velocity
 	enemy.fixed_move_y   = fixed_move_y
 	enemy.scroll_y       = scroll_y

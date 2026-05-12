@@ -4,12 +4,15 @@ extends Node
 # GAME CONSTANTS - Centralne miejsce dla stałych używanych w całej grze
 # ============================================================================
 
+# ---- Współczynnik skalowania (288px → 608px playfield) ----
+const SCALE_FACTOR = 2.11
+
 # ---- Granice usuwania (px Godot) ----
-# Ekran: 320x200, margines 50px żeby wrogowie nie strzelali spoza ekranu
-const BOUNDS_LEFT = -80
-const BOUNDS_RIGHT = 340
-const BOUNDS_TOP = -112
-const BOUNDS_BOTTOM = 210
+# Oryginał: 320x200, margines 50px. Przeskalowane × 2.11.
+const BOUNDS_LEFT   = -169
+const BOUNDS_RIGHT  =  717
+const BOUNDS_TOP    = -236
+const BOUNDS_BOTTOM =  443
 
 # ---- Sceny pocisków ----
 var enemy_projectile_scene: PackedScene

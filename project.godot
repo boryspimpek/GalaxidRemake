@@ -25,10 +25,10 @@ SoundManager="*res://scripts/managers/SoundManager.gd"
 
 [display]
 
-window/size/viewport_width=360
-window/size/viewport_height=200
-window/size/window_width_override=1440
-window/size/window_height_override=800
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/size/window_width_override=1920
+window/size/window_height_override=900
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
@@ -38,8 +38,8 @@ enabled=PackedStringArray("res://addons/level_editor/plugin.cfg")
 
 [game]
 
-debug/start_dist=2300
-debug/level_name="lvl17"
+debug/start_dist=0
+debug/level_name=""
 
 [physics]
 

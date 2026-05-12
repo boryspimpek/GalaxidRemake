@@ -58,7 +58,7 @@ func _ready():
 func _process(_delta):
 	level_distance += float(back_move)
 	if _level_map:
-		_level_map.position.y += float(back_move)
+		_level_map.position.y += float(back_move) * GameConstants.SCALE_FACTOR
 	event_processor.process_events_for_distance(int(level_distance))
 	enemy_spawner.process_random_spawn(_delta)
 	_update_camera_pan()

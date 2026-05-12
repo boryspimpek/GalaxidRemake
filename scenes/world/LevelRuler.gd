@@ -11,8 +11,8 @@ extends Node2D
 		line_spacing = val
 		queue_redraw()
 
-const SCREEN_W := 360
-const SCREEN_H := 200
+const SCREEN_W := 608
+const SCREEN_H := 1080
 
 const COLOR_START := Color(0.04, 0.10, 0.04, 1.0)
 const COLOR_A     := Color(0.04, 0.04, 0.14, 1.0)

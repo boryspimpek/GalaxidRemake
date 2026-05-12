@@ -14,11 +14,13 @@ script = ExtResource("3_level_manager")
 script = ExtResource("5_levelruler")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=-1294967295]
-position = Vector2(180, 100)
+position = Vector2(960, 540)
 
 [node name="Player" parent="." unique_id=1834704228 instance=ExtResource("1_c6gwx")]
-position = Vector2(158, 186)
+position = Vector2(286, 1048)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1006581802]
+visible = false
 
 [node name="HUD" parent="CanvasLayer" unique_id=1839674698 instance=ExtResource("4_gbddb")]
+visible = false

@@ -82,11 +82,8 @@ func _physics_process(_delta):
 func _clamp_to_screen():
 	var shape = $CollisionShape2D.shape
 	var margin: float = shape.radius
-	var cam = get_viewport().get_camera_2d()
-	var cam_x = cam.position.x if cam else 180.0
-	# Clamp do widocznego pola gry (288px) względem kamery
-	position.x = clamp(position.x, cam_x - 180.0 + margin, cam_x - 180.0 + 288.0 - margin)
-	position.y = clamp(position.y, margin, 200.0 - margin)
+	position.x = clamp(position.x, margin, 608.0 - margin)
+	position.y = clamp(position.y, margin, 1080.0 - margin)
 
 # ============================================================================
 # 3. DEBUG
