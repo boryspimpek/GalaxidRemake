@@ -9,11 +9,6 @@ const EventProcessor = preload("res://scripts/managers/EventProcessor.gd")
 # w ktory poziom gracz ma grać
 @export var level_name: String = "lvl17"
 
-# ---- Kamera ----
-const CAMERA_PAN_MAX  = 24.0   # ile px kamera może się przesunąć w każdą stronę
-const GAME_FIELD_PX   = 288.0  # szerokość pola gry w px
-const CAMERA_LERP     = 0.12   # prędkość doganiania (przy 30fps)
-
 # Prędkości scrollingu (Tyrian px/klatkę)
 var back_move:  int = 1   # Ground (slot 25, 75) — kontroluje też scroll LevelMap
 var back_move2: int = 2   # Sky (slot 0)
@@ -21,8 +16,6 @@ var back_move3: int = 3   # Top (slot 50)
 
 # Węzeł z wrogami i LevelRuler — scrolluje w dół z back_move px/klatkę
 var _level_map: Node2D
-@onready var _camera: Camera2D = $Camera2D
-
 # SEKCJA: Menedżery
 var enemy_spawner: EnemySpawner
 var enemy_controller: EnemyController
@@ -61,17 +54,10 @@ func _process(_delta):
 		_level_map.position.y += float(back_move) * GameConstants.SCALE_FACTOR
 	event_processor.process_events_for_distance(int(level_distance))
 	enemy_spawner.process_random_spawn(_delta)
-	_update_camera_pan()
 
 	if Engine.get_frames_drawn() % 100 == 0:
 		print("Dist: ", int(level_distance))
 
-func _update_camera_pan():
-	var mouse_x = clamp(get_viewport().get_mouse_position().x, 0.0, GAME_FIELD_PX)
-	var t = mouse_x / GAME_FIELD_PX
-	var target_x = 180.0 + lerp(-CAMERA_PAN_MAX, CAMERA_PAN_MAX, t)
-	_camera.position.x = lerp(_camera.position.x, target_x, CAMERA_LERP)
-		
 func load_data():
 	DataManager.get_weapons()  # pre-cache broni przed pierwszym strzałem
 

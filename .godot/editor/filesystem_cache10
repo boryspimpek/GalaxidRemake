@@ -65,7 +65,7 @@ large_ground_f08.png::CompressedTexture2D::3263994792436502940::1778521818::1778
 large_ground_f09.png::CompressedTexture2D::6202641646427837605::1778521818::1778521818::1::::<><><>0<>0<>87370f64925f93d739e35df7d2f42171<>res://.godot/imported/large_ground_f09.png-dff8650093d5613365e0116a16c36648.ctex::
 large_ground_f10.png::CompressedTexture2D::3566594465004317813::1778521818::1778521818::1::::<><><>0<>0<>49c784c768e2824cafe5c2af2a4ebad1<>res://.godot/imported/large_ground_f10.png-480eac10c64d4c17c884208fa1ff9c29.ctex::
 large_ground_f11.png::CompressedTexture2D::8927307782355155714::1778521818::1778521818::1::::<><><>0<>0<>b0b56b8e8e3f758f35f6aad543f95394<>res://.godot/imported/large_ground_f11.png-03dfc36377699eea96c9aa54933b7bbe.ctex::
-::res://data/enemy_sprites/::1778586459
+::res://data/enemy_sprites/::1778589818
 enemy_001_bank2_f00.png::CompressedTexture2D::7091996490655281085::1778521818::1778521818::1::::<><><>0<>0<>6a5340230ee0e3fd2669e266e2635d52<>res://.godot/imported/enemy_001_bank2_f00.png-4baa96999e4551e2bda2609675fbfa39.ctex::
 enemy_001_bank2_f01.png::CompressedTexture2D::8418988256755255618::1778521818::1778521818::1::::<><><>0<>0<>1d69285a3477e17a9caa848c7670926a<>res://.godot/imported/enemy_001_bank2_f01.png-afd12d5df9a1606dd2ad1e1084518ce2.ctex::
 enemy_001_bank2_f02.png::CompressedTexture2D::2983432540534294120::1778521818::1778521818::1::::<><><>0<>0<>cbdd6432252c256329a11614c95ed069<>res://.godot/imported/enemy_001_bank2_f02.png-b08900bdcd8667862594c2235410256e.ctex::
@@ -135,7 +135,7 @@ enemy_011_bank1_f04.png::CompressedTexture2D::1249959763349787736::1778521818::1
 enemy_011_bank1_f05.png::CompressedTexture2D::8611396246587096951::1778521819::1778521819::1::::<><><>0<>0<>007e926694cebd04601d3bd63e64c035<>res://.godot/imported/enemy_011_bank1_f05.png-c82ef477e03f7823070c027b8bbb65dc.ctex::
 enemy_011_bank1_f06.png::CompressedTexture2D::4846080098120774940::1778521819::1778521819::1::::<><><>0<>0<>e02dc1c93477b94733e02c38230d9185<>res://.godot/imported/enemy_011_bank1_f06.png-dafcb5df37a449fd3787e017163b522a.ctex::
 enemy_011_bank1_f07.png::CompressedTexture2D::7151332065207528155::1778521819::1778521819::1::::<><><>0<>0<>f28f020b46c58db895012263b5f7ac06<>res://.godot/imported/enemy_011_bank1_f07.png-3a6d06ae61a30006482b83e6fd1952d3.ctex::
-enemy_012_bank1_f00.png::CompressedTexture2D::8424497551518010717::1778521819::1778521819::1::::<><><>0<>0<>ef55d47509c0783522db901899dd6c0b<>res://.godot/imported/enemy_012_bank1_f00.png-7f4e612c94d30c6e633b698055821902.ctex::
+enemy_012_bank1_f00.png::CompressedTexture2D::8424497551518010717::1777053540::1778589836::1::::<><><>0<>0<>ef55d47509c0783522db901899dd6c0b<>res://.godot/imported/enemy_012_bank1_f00.png-7f4e612c94d30c6e633b698055821902.ctex::
 enemy_012_bank1_f01.png::CompressedTexture2D::4536132175081377881::1778521819::1778521819::1::::<><><>0<>0<>f84cd6da3327d5959be195c662ca46ae<>res://.godot/imported/enemy_012_bank1_f01.png-d181a20553edf2156d09eb571e442ceb.ctex::
 enemy_012_bank1_f02.png::CompressedTexture2D::8937389375897021274::1778521819::1778521819::1::::<><><>0<>0<>47f49a05dc91316def59a8aed09f0f94<>res://.godot/imported/enemy_012_bank1_f02.png-99effc3dfab396edcc5b29238fcbf816.ctex::
 enemy_012_bank1_f03.png::CompressedTexture2D::4902804403129625018::1778521819::1778521819::1::::<><><>0<>0<>838f0265e7cc27f54506063b93b4a429<>res://.godot/imported/enemy_012_bank1_f03.png-9a3b9c28a099d923efb51f0ac8187ad9.ctex::
@@ -2986,7 +2986,7 @@ port42_retroball__lvl11__w0777__shots2_0020.png::CompressedTexture2D::2845228246
 ::res://editor/::1778521892
 ::res://Galaxid/::1778574755
 ::res://scenes/::1778576710
-::res://scenes/enemies/::1778587410
+::res://scenes/enemies/::1778589829
 Enemy_000.tscn::PackedScene::-1::1778521892::0::1::::<><><>0<>0<><>::res://scenes/enemy/Enemy.tscn
 Enemy_001.tscn::PackedScene::-1::1778521892::0::1::::<><><>0<>0<><>::res://scenes/enemy/Enemy.tscn<>res://data/enemy_sprites/enemy_001_bank2_f00.png
 Enemy_002.tscn::PackedScene::-1::1778521892::0::1::::<><><>0<>0<><>::res://scenes/enemy/Enemy.tscn<>res://data/enemy_sprites/enemy_002_bank10_f00.png
@@ -3877,10 +3877,10 @@ WeaponSystem.tscn::PackedScene::-1::1778521896::0::1::::<><><>0<>0<><>::res://sc
 ::res://scenes/projectile/::1778521896
 projectile.gd::GDScript::6425248782272021058::1778521896::0::1::::<>Area2D<><>0<>0<><>::
 Projectile.tscn::PackedScene::4061135435519992803::1778521896::0::1::::<><><>0<>0<><>::uid://cxso55pxdnnn3::::res://scenes/projectile/projectile.gd<>uid://c7xhvqsl08oyb::::res://assets/bullet.png
-::res://scenes/world/::1778589036
-LevelManager.gd::GDScript::7303798033325442::1778576699::0::1::::<>Node2D<><>0<>0<><>::
+::res://scenes/world/::1778589663
+LevelManager.gd::GDScript::7303798033325442::1778589663::0::1::::<>Node2D<><>0<>0<><>::
 LevelRuler.gd::GDScript::2815447142935995683::1778584596::0::1::::<>Node2D<><>0<>1<><>::
-World.tscn::PackedScene::2889633771764373976::1778589036::0::1::::<><><>0<>0<><>::uid://bte7ofi7pgn5b::::res://scenes/player/Player.tscn<>uid://dsj7d5ivh3g::::res://scenes/world/LevelManager.gd<>uid://iddg8culgc7q::::res://UI/Hud.tscn<>uid://bgd3adt6s44d8::::res://scenes/world/LevelRuler.gd
+World.tscn::PackedScene::2889633771764373976::1778589635::0::1::::<><><>0<>0<><>::uid://bte7ofi7pgn5b::::res://scenes/player/Player.tscn<>uid://dsj7d5ivh3g::::res://scenes/world/LevelManager.gd<>uid://iddg8culgc7q::::res://UI/Hud.tscn<>uid://bgd3adt6s44d8::::res://scenes/world/LevelRuler.gd
 ::res://scripts/::1778521896
 ::res://scripts/core/::1778584360
 DataManager.gd::GDScript::1970122233642260559::1778521896::0::1::::<>Node<><>0<>0<><>::
