@@ -4,3 +4,5 @@ res://scenes/enemies/Enemy_027.tscn
 res://scenes/enemies/Enemy_028.tscn
 res://scenes/enemies/Enemy_029.tscn
 res://scenes/enemies/Enemy_030.tscn
+res://scenes/world/World.tscn
+res://scenes/world/LevelManager.gd

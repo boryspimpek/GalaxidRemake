@@ -7,7 +7,7 @@ const EventProcessor = preload("res://scripts/managers/EventProcessor.gd")
 
 # Główny plik z eventami - SCENARIUSZ POZIOMU, tu ustawiamy
 # w ktory poziom gracz ma grać
-@export var level_name: String = "lvl17"
+@export var level_name: String = "lvl3"
 
 # Prędkości scrollingu (Tyrian px/klatkę)
 var back_move:  int = 1   # Ground (slot 25, 75) — kontroluje też scroll LevelMap

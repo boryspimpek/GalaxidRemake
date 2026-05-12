@@ -4649,9 +4649,11 @@
 			},
 			{
 				"dist": 2400,
-				"event_type": 3,
-				"event_name": "scroll_speed_preset",
-				"note": "preset: backMove=1 z opóźnieniami (map1YDelayMax=3, map2YDelayMax=2)",
+				"event_type": 2,
+				"event_name": "scroll_speed",
+				"back_move": 1,
+				"back_move2": 2,
+				"back_move3": 3,
 				"category": "context"
 			},
 			{
@@ -9851,7 +9853,7 @@
 				"category": "context"
 			},
 			{
-				"dist": 3420,
+				"dist": 3500,
 				"event_type": 2,
 				"event_name": "scroll_speed",
 				"back_move": 1,
