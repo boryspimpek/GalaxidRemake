@@ -78,152 +78,6 @@ func spawn_enemy(event: Dictionary):
 	enemy.projectile_spawned.connect(level_manager._on_enemy_projectile_spawned)
 	level_manager.add_child(enemy)
 
-func spawn_free_enemy(event: Dictionary):
-	var enemy_id = int(event.get("enemy_id", 0))
-	var enemy = _instantiate(enemy_id)
-	if not enemy:
-		return
-
-	var spawn_pos = Vector2(
-		float(event.get("screen_x", 0)),
-		float(event.get("screen_y", 0)))
-
-	var vel = Vector2(
-		float(event.get("vel_x", float(enemy.xmove))),
-		float(event.get("vel_y", float(enemy.ymove))))
-
-	_setup_enemy(enemy, enemy_id, spawn_pos, vel, 0, 0, 0, int(event.get("link_num", 0)), 0)
-
-	enemy.projectile_spawned.connect(level_manager._on_enemy_projectile_spawned)
-	level_manager.add_child(enemy)
-	print("Spawn Free Enemy")
-
-func spawn_path_enemy(event: Dictionary):
-	var enemy_id = int(event.get("enemy_id", 900))
-	var enemy = _instantiate(enemy_id)
-	if not enemy:
-		return
-
-	if event.has("path") and "wybran_sciezka" in enemy:
-		enemy.wybran_sciezka = event.get("path")
-
-	var spawn_pos = Vector2(
-		float(event.get("screen_x", 0)),
-		float(event.get("screen_y", 0)))
-
-	if enemy.has_signal("projectile_spawned"):
-		_setup_enemy(enemy, enemy_id, spawn_pos, Vector2.ZERO, 0, 0, 100, 0, 25)
-		enemy.projectile_spawned.connect(level_manager._on_enemy_projectile_spawned)
-	else:
-		enemy.name = "Enemy_%03d" % enemy_id
-		enemy.global_position = spawn_pos
-
-	level_manager.add_child(enemy)
-
-func just_spawn_enemy(event: Dictionary):
-	if "path" in event:
-		spawn_path_enemy(event)
-	else:
-		spawn_free_enemy(event)
-
-func spawn_group_enemy(event: Dictionary):
-	var group_id = int(event.get("enemy_id", 0))
-	var base_pos = Vector2(
-		float(event.get("screen_x", 0)),
-		float(event.get("screen_y", 0)))
-	base_pos.x += x_offset
-	var link_num = int(event.get("link_num", 0))
-
-	var group_scene = _scene_for_enemy(group_id)
-	if not group_scene:
-		return
-
-	var group = group_scene.instantiate()
-
-	var id_regex = RegEx.new()
-	id_regex.compile("^Enemy_(\\d+)")
-
-	for child in group.get_children():
-		if not child is Node2D:
-			continue
-		var rx = id_regex.search(child.name)
-		if not rx:
-			continue
-
-		var child_id = int(rx.get_string(1))
-		var child_pos = base_pos + child.position
-
-		var sub_event: Dictionary = {
-			"enemy_id": child_id,
-			"screen_x": child_pos.x,
-			"screen_y": child_pos.y,
-			"link_num": link_num,
-		}
-
-		if "wybran_sciezka" in child and child.wybran_sciezka != "":
-			sub_event["path"] = child.wybran_sciezka
-		else:
-			sub_event["vel_x"] = float(event.get("vel_x", child.xmove))
-			sub_event["vel_y"] = float(event.get("vel_y", child.ymove))
-
-		just_spawn_enemy(sub_event)
-
-	group.queue_free()
-
-func spawn_formation(event: Dictionary):
-	var formation_id = int(event.get("enemy_id", 0))
-	var base_pos = Vector2(
-		float(event.get("screen_x", 0)),
-		float(event.get("screen_y", 0)))
-	base_pos.x += x_offset
-	var link_num = int(event.get("link_num", 0))
-
-	var formation_scene = _scene_for_enemy(formation_id)
-	if not formation_scene:
-		return
-
-	var formation = formation_scene.instantiate()
-	formation.position = base_pos
-
-	# Zbierz wrogów kontrolowanych przez RemoteTransform2D (ruch po ścieżce)
-	var path_controlled: Array = []
-	for rt in formation.find_children("*", "RemoteTransform2D", true, false):
-		if rt.remote_path:
-			var target = rt.get_node_or_null(rt.remote_path)
-			if target:
-				path_controlled.append(target)
-
-	var id_regex = RegEx.new()
-	id_regex.compile("^Enemy_(\\d+)")
-
-	for child in formation.get_children():
-		if not child is Node2D:
-			continue
-		var rx = id_regex.search(child.name)
-		if not rx:
-			continue
-		if not child.has_signal("projectile_spawned"):
-			continue
-
-		var child_id = int(rx.get_string(1))
-		child.enemy_id = child_id
-		child.link_num = link_num
-		child.enemy_slot = 0
-		child.event_type = 0
-		child.fixed_move_y = 0
-		child.scroll_y = 0
-		child.projectile_scene = GameConstants.enemy_projectile_scene
-		child.projectile_spawned.connect(level_manager._on_enemy_projectile_spawned)
-
-		if child in path_controlled:
-			child.velocity = Vector2.ZERO
-		else:
-			child.velocity = Vector2(
-				float(event.get("vel_x", child.xmove)),
-				float(event.get("vel_y", child.ymove)))
-
-	level_manager.add_child(formation)
-
 func spawn_4x4_enemies(event: Dictionary):
 	var enemy_ids = event.get("enemy_ids", [])
 	var enemy_slot = int(event.get("enemy_slot", 25))
@@ -232,8 +86,8 @@ func spawn_4x4_enemies(event: Dictionary):
 	var scroll_for_slot = _scroll_for_slot(enemy_slot)
 
 	var base_pos = Vector2(
-		float(event.get("screen_x", 0)) -24.0,
-		float(event.get("screen_y", 0)) + 3.0 - 28.0)
+		float(event.get("screen_x", 0)),
+		float(event.get("screen_y", 0)))
 
 	# Offsety dla 4x4 gridu (24x28px)
 	var offsets = [Vector2(0, 26), Vector2(23, 26), Vector2(0, 0), Vector2(23, 0)]
@@ -257,30 +111,6 @@ func spawn_4x4_enemies(event: Dictionary):
 		enemy.projectile_spawned.connect(level_manager._on_enemy_projectile_spawned)
 		level_manager.add_child(enemy)
 		
-func spawn_free_4x4(event: Dictionary):
-	var enemy_ids = event.get("enemy_ids", [])
-	var base_pos = Vector2(
-		float(event.get("screen_x", 0)),
-		float(event.get("screen_y", 0)))
-	# Offsety dla 4x4 gridu (24x28px)
-	var offsets = [Vector2(0, 26), Vector2(23, 26), Vector2(0, 0), Vector2(23, 0)]
-
-	for i in range(4):
-		var eid = int(enemy_ids[i])
-		var enemy = _instantiate(eid)
-		if not enemy:
-			continue
-
-		var spawn_pos = base_pos + offsets[i]
-		var vel = Vector2(
-			float(event.get("vel_x", float(enemy.xmove))),
-			float(event.get("vel_y", float(enemy.ymove))))
-
-		_setup_enemy(enemy, eid, spawn_pos, vel, 0, 0, 0, int(event.get("link_num", 0)), 0)
-
-		enemy.projectile_spawned.connect(level_manager._on_enemy_projectile_spawned)
-		level_manager.add_child(enemy)
-
 func spawn_sky_enemy(event: Dictionary):
 	var enemy_id = int(event.get("enemy_id", 0))
 	var enemy = _instantiate(enemy_id)
@@ -454,7 +284,7 @@ func _setup_enemy(enemy: Node2D, enemy_id: int, spawn_position: Vector2,
 		velocity: Vector2, fixed_move_y: int, scroll_y: int,
 		event_type: int, link_num: int, enemy_slot: int) -> void:
 	enemy.name           = "Enemy_%d" % enemy_id
-	enemy.global_position = spawn_position + Vector2(x_offset, 0)
+	enemy.global_position = spawn_position
 	enemy.velocity       = velocity
 	enemy.fixed_move_y   = fixed_move_y
 	enemy.scroll_y       = scroll_y
