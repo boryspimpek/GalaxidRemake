@@ -64,6 +64,14 @@ esize = 1
 startx = 130
 starty = -13
 startxc = 100
+excc = 1
+eycc = 1
+xrev = 1
+yrev = 1
+xaccel = 1
+yaccel = 1
+tur = [127, 0, 0]
+freq = [12, 0, 0]
 path_speed = 0.0
 
 [node name="Visual" parent="." index="0" unique_id=1405638014]
