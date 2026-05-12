@@ -1,1 +1,3 @@
 res://scenes/enemies/Enemy_005.tscn
+res://scenes/world/World.tscn
+res://scenes/world/LevelManager.gd

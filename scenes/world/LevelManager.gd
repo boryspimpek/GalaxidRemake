@@ -19,12 +19,6 @@ var back_move:  int = 1   # Ground (slot 25, 75) — kontroluje też scroll Leve
 var back_move2: int = 2   # Sky (slot 0)
 var back_move3: int = 3   # Top (slot 50)
 
-# Pozycje mapy z nagłówka poziomu
-var map_x: int = 1
-var map_x2: int = 1
-var map_x3: int = 1
-var map_y: int = 0
-
 # Węzeł z wrogami i LevelRuler — scrolluje w dół z back_move px/klatkę
 var _level_map: Node2D
 @onready var _camera: Camera2D = $Camera2D
@@ -86,14 +80,6 @@ func load_data():
 		print("LevelManager: Załadowano ", level_data["events"].size(), " eventów")
 		if level_data["header"].has("level_enemies"):
 			print("LevelManager: Załadowano ", level_data["header"]["level_enemies"].size(), " wrogów do random spawn")
-		if level_data["header"].has("map_x"):
-			map_x = level_data["header"]["map_x"]
-		if level_data["header"].has("map_x2"):
-			map_x2 = level_data["header"]["map_x2"]
-		if level_data["header"].has("map_x3"):
-			map_x3 = level_data["header"]["map_x3"]
-		if level_data["header"].has("map_y"):
-			map_y = level_data["header"]["map_y"]
 	return level_data
 
 func init_managers():
