@@ -1,24 +1,39 @@
-# Galaxid — Project Context
+# GalaxidRemake — Project Context
 
-Galaxid is a Godot 4 remake of the classic shooter **Tyrian** (1995, Epic MegaGames).
-The game is a vertical-scrolling shoot-'em-up. All game-logic units (positions, velocities,
-distances) use **Tyrian pixel/frame** values, not Godot pixels. The screen is **288 px wide**.
+GalaxidRemake is a Godot 4.6 remake of the classic shooter **Tyrian** (1995, Epic MegaGames).
+Vertical-scrolling shoot-'em-up. Game-logic values (velocities, distances) use **Tyrian pixel/frame**
+units from the original data. Rendered at **1920×1080**, playfield **608 px wide**.
+
+---
+
+## Scaling
+
+All Tyrian legacy values are in original 288×200 px space. `SCALE_FACTOR = 2.11` (288→608 px).
+
+Applied in:
+- `EnemySpawner._setup_enemy()` — spawn position X and Y scaled on instantiation
+- `Enemy._process()` — entire movement (velocity + fixed_move_y + scroll_y) scaled before applying to position
+- `LevelManager._process()` — `_level_map.position.y` scaled for visual scroll; `level_distance` accumulates unscaled (preserves event timing)
+
+`GameConstants.BOUNDS_*` are in scaled Godot px space (×2.11).
+Player clamped to X: 0–608, Y: 0–1080.
 
 ---
 
 ## Architecture
 
 ```
-scenes/world/LevelManager.gd      — root node of a level; owns all managers
-scripts/managers/EnemySpawner.gd  — instantiates & configures enemy scenes
+scenes/world/LevelManager.gd        — root node of a level; owns all managers
+scripts/managers/EnemySpawner.gd    — instantiates & configures enemy scenes
 scripts/managers/EnemyController.gd — global enemy commands (move, accel, fire)
-scripts/managers/EventProcessor.gd — reads lvlXX.json events, dispatches them
-scenes/enemy/Enemy.gd             — base class for all enemies (Area2D)
-scenes/background/Background.gd   — owns TileBackground + Starfield
-scenes/background/TileBackground.gd — 3 TileLayer nodes (ground / sky / top)
-scenes/background/TileLayer.gd    — scrolls a tilemap layer each frame
+scripts/managers/EventProcessor.gd  — reads lvlXX.json events, dispatches them
+scenes/enemy/Enemy.gd               — base class for all enemies (Area2D)
+scenes/world/LevelRuler.gd          — @tool, draws distance ruler (reference grid)
 addons/level_editor/LevelEditorPanel.gd — @tool editor plugin (timeline + JSON editor)
 ```
+
+No background system (no TileBackground, TileLayer, Starfield).
+Camera2D is static at `(304, 540)` — centers 608 px playfield on 1920 px screen, no pan logic.
 
 ---
 
@@ -26,20 +41,17 @@ addons/level_editor/LevelEditorPanel.gd — @tool editor plugin (timeline + JSON
 
 Each frame `LevelManager._process` runs:
 ```gdscript
-level_distance += float(back_move)         # advances level timeline
-TileLayer._scroll_y -= back_move           # moves the tile layer down
+level_distance += float(back_move)                              # logical timeline — unchanged
+_level_map.position.y += float(back_move) * GameConstants.SCALE_FACTOR  # visual scroll — scaled
 ```
 
-Three scroll speeds correspond to three background layers and enemy slots:
+Three scroll speeds correspond to enemy slots:
 
-| Variable    | Slot  | Layer   | Typical value |
-|-------------|-------|---------|---------------|
-| `back_move` | 25,75 | ground  | 1–4           |
-| `back_move2`| 0     | sky     | 2× back_move  |
-| `back_move3`| 50    | top     | 3× back_move  |
-
-**Critical invariant:** `layer1_scroll_px == level_distance` (1:1 ratio, no multiplier).
-`layer2` and `layer3` scroll proportionally: `segment * backMoveN / back_move`.
+| Variable     | Slot  | Typical value |
+|--------------|-------|---------------|
+| `back_move`  | 25,75 | 1–4           |
+| `back_move2` | 0     | 2× back_move  |
+| `back_move3` | 50    | 3× back_move  |
 
 When `back_move` changes mid-level (event type 2/30), all living enemies' `scroll_y` is
 updated immediately and `EnemySpawner.set_scroll_data()` is called.
@@ -84,27 +96,27 @@ Each event has: `dist`, `event_type`, `event_name`, `category` (`"spawn"` or `"c
 | 26   | small_enemy_adjust    | `small_enemy_adjust` (bool)                     |
 | 27   | global_enemy_accelrev | reverse accel                                   |
 | 31   | enemy_fire_override   | overrides fire params of live enemies           |
-| 34   | enemy_fire_power      | `link_num`, `new_tur[3]`, `new_freq[3]` (-1 = keep current); affects all enemies (incl. formations) with matching link_num |
+| 34   | enemy_fire_power      | `link_num`, `new_tur[3]`, `new_freq[3]` (-1 = keep current) |
 
 ### Spawn events (create enemies)
 
-| type | event_name        | key fields                                                  |
-|------|-------------------|-------------------------------------------------------------|
-| 6    | spawn_ground      | `screen_x`, `screen_y`, `enemy_id`, `enemy_slot`(25)       |
-| 7    | spawn_top         | `screen_x`, `screen_y`, `enemy_id`, `enemy_slot`(50)       |
-| 10   | spawn_ground_2    | like 6, slot 75                                             |
-| 15   | spawn_sky         | `screen_x`, `screen_y`, `enemy_id`, `enemy_slot`           |
-| 17   | spawn_enemy       | generic: `screen_x`, `screen_y`, `enemy_id`, `enemy_slot`, `y_vel` |
-| 18   | spawn_sky_bottom  | sky layer, scrolls upward (`-back_move2`)                   |
-| 23   | spawn_sky_bottom2 | sky layer, scrolls with slot                                |
-| 32   | spawn_enemy_special | spawns at y=190, scrolls with `-back_move3`               |
-| 33   | enemy_from_enemy  | spawns enemy when another dies                              |
-| 40   | enemy_continual_damage | env damage to player                                  |
-| 56   | spawn_ground2_bottom | ground2, offset +6/+3                                   |
-| 60   | assign_special_enemy | `dat`..`dat6` fields, marks special/boss enemy          |
-| 100  | path_enemy        | `enemy_id`, `path` (node name), `screen_x`, `screen_y`     |
-| 200  | spawn_free_enemy  | `enemy_id`, `screen_x`, `screen_y`, `vel_x`, `vel_y` — scroll_y=0, slot=0 |
-| 201  | spawn_free_4x4    | `enemy_ids`[4], `screen_x`, `screen_y`, `vel_x`, `vel_y` — 2×2 grid, free |
+| type | event_name           | key fields                                                   |
+|------|----------------------|--------------------------------------------------------------|
+| 6    | spawn_ground         | `screen_x`, `screen_y`, `enemy_id`, `enemy_slot`(25)        |
+| 7    | spawn_top            | `screen_x`, `screen_y`, `enemy_id`, `enemy_slot`(50)        |
+| 10   | spawn_ground_2       | like 6, slot 75                                              |
+| 15   | spawn_sky            | `screen_x`, `screen_y`, `enemy_id`, `enemy_slot`            |
+| 17   | spawn_enemy          | generic: `screen_x`, `screen_y`, `enemy_id`, `enemy_slot`, `y_vel` |
+| 18   | spawn_sky_bottom     | sky layer, scrolls upward (`-back_move2`)                    |
+| 23   | spawn_sky_bottom2    | sky layer, scrolls with slot                                 |
+| 32   | spawn_enemy_special  | spawns at y=190, scrolls with `-back_move3`                  |
+| 33   | enemy_from_enemy     | spawns enemy when another dies                               |
+| 40   | enemy_continual_damage | env damage to player                                       |
+| 56   | spawn_ground2_bottom | ground2, offset +6/+3                                        |
+| 60   | assign_special_enemy | `dat`..`dat6` fields, marks special/boss enemy               |
+| 100  | path_enemy           | `enemy_id`, `path` (node name), `screen_x`, `screen_y`      |
+| 200  | spawn_free_enemy     | `enemy_id`, `screen_x`, `screen_y`, `vel_x`, `vel_y` — scroll_y=0, slot=0 |
+| 201  | spawn_free_4x4       | `enemy_ids`[4], `screen_x`, `screen_y`, `vel_x`, `vel_y` — 2×2 grid, free |
 
 Common optional fields: `link_num`, `fixed_move_y`, `y_vel`, `enemy_slot`.
 
@@ -117,28 +129,30 @@ Loaded on demand and cached by `EnemySpawner._scene_for_enemy(id)`.
 
 ### Scene-exported fields (set in .tscn, define enemy behaviour)
 
-| field    | meaning                                                  |
-|----------|----------------------------------------------------------|
-| `armor`  | HP; enemy dies when armor ≤ 0                           |
-| `esize`  | 0=small, 1=large (affects explosion sound & adjust)      |
-| `xmove`  | base velocity X (px/frame)                               |
-| `ymove`  | base velocity Y (px/frame, added to scroll_y)            |
-| `startx`, `starty` | default spawn position for random spawn         |
-| `startxc`| random spread radius for X in random spawn               |
-| `excc`, `eycc` | pendulum acceleration engine (Tyrian xcaccel/ycaccel) |
-| `xrev`, `yrev` | pendulum reversal threshold velocity                |
-| `xaccel`, `yaccel` | random per-frame velocity addition (unbounded if excc=0!) |
-| `tur[3]` | weapon IDs [down, right, left], 0=none                  |
-| `freq[3]`| fire cooldown frames per weapon                         |
+| field               | meaning                                                  |
+|---------------------|----------------------------------------------------------|
+| `armor`             | HP; enemy dies when armor ≤ 0                           |
+| `esize`             | 0=small, 1=large (affects explosion sound & adjust)      |
+| `xmove`             | base velocity X (Tyrian px/frame)                        |
+| `ymove`             | base velocity Y (Tyrian px/frame)                        |
+| `startx`, `starty`  | default spawn position for random spawn                  |
+| `startxc`           | random spread radius for X in random spawn               |
+| `excc`, `eycc`      | pendulum acceleration engine (Tyrian xcaccel/ycaccel)    |
+| `xrev`, `yrev`      | pendulum reversal threshold velocity                     |
+| `xaccel`, `yaccel`  | random per-frame velocity addition                       |
+| `tur[3]`            | weapon IDs [down, right, left], 0=none                   |
+| `freq[3]`           | fire cooldown frames per weapon                          |
 
 ### Runtime movement per frame
 
 ```gdscript
-velocity.x += float(xaccel)     # random accel (dangerous without excc)
+velocity.x += float(xaccel)
 velocity.y += float(yaccel)
 # pendulum engine updates velocity.x / velocity.y via excc/eycc
-position.x += velocity.x
-position.y += velocity.y + float(fixed_move_y) + float(scroll_y)
+var move_x = velocity.x * SCALE_FACTOR
+var move_y = (float(fixed_move_y) + velocity.y + float(scroll_y)) * SCALE_FACTOR
+position.x += move_x
+position.y += move_y
 ```
 
 Enemy is removed when position goes outside `GameConstants.BOUNDS_*`.
@@ -152,8 +166,6 @@ slot 50   → scroll_y = back_move3 (top layer)
 slot 75   → scroll_y = back_move  (ground layer)
 ```
 
-**spawn_free_enemy / spawn_free_4x4** always use slot=0, scroll_y=0, velocity from event.
-
 ---
 
 ## Debug / Play from dist
@@ -163,8 +175,7 @@ Plugin saves to `ProjectSettings`:
 - `game/debug/level_name` — overrides `LevelManager.level_name` export
 
 `LevelManager._ready()` reads both **before** `init_managers()` / `load_data()`.
-`EventProcessor.fast_forward_to(dist)` replays only context events and computes exact
-background pixel offsets for `Background.seek_to(px1, px2, px3)`.
+`EventProcessor.fast_forward_to(dist)` replays context events to restore global state.
 
 ---
 
@@ -172,7 +183,7 @@ background pixel offsets for `Background.seek_to(px1, px2, px3)`.
 
 File: `addons/level_editor/LevelEditorPanel.gd` (`@tool extends Control`)
 
-- Timeline: Y axis = `dist` (inverted: 0 at bottom), X axis = screen X (0–288).
+- Timeline: Y axis = `dist` (inverted: 0 at bottom), X axis = screen X (0–288, legacy units).
 - Spawn events drawn as colored circles at `screen_x`.
 - Context events drawn as colored bars (full width).
 - Filter bar: `spawn` visible by default, `context` hidden by default.

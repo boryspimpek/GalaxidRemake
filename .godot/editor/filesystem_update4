@@ -1,1 +1,2 @@
 res://scenes/world/LevelManager.gd
+res://scripts/core/GameConstants.gd

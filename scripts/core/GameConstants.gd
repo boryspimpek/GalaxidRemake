@@ -12,7 +12,7 @@ const SCALE_FACTOR = 2.11
 const BOUNDS_LEFT   = -169
 const BOUNDS_RIGHT  =  717
 const BOUNDS_TOP    = -236
-const BOUNDS_BOTTOM =  443
+const BOUNDS_BOTTOM =  1080
 
 # ---- Sceny pocisków ----
 var enemy_projectile_scene: PackedScene
