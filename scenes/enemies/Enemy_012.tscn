@@ -12,12 +12,6 @@ metadata/_snap_count = 100
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_012"]
 
-[sub_resource type="Curve2D" id="Curve2D_3spji"]
-_data = {
-"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 195, 0, 0, 0, 0, -2, 205, 0, 0, 0, 0, -21, 205, 0, 0, 0, 0, -190, 0)
-}
-point_count = 5
-
 [node name="Enemy_012" unique_id=139073837 instance=ExtResource("1_base")]
 armor = 3
 esize = 1
@@ -25,24 +19,9 @@ ymove = 1
 path_speed_curve = SubResource("Curve_3spji")
 
 [node name="Visual" parent="." index="0" unique_id=1405638014]
-scale = Vector2(0.06, 0.06)
+scale = Vector2(2.11, 2.11)
 texture = ExtResource("2_tex")
 
 [node name="CollisionShape2D" parent="." index="1" unique_id=183017983]
 rotation = 1.5707964
 shape = SubResource("CircleShape2D_012")
-
-[node name="Turn" type="Path2D" parent="." index="3" unique_id=652082014]
-curve = SubResource("Curve2D_3spji")
-
-[node name="PathFollow2D" type="PathFollow2D" parent="Turn" index="0" unique_id=401587729]
-rotation = 1.5707964
-loop = false
-
-[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Turn/PathFollow2D" index="0" unique_id=972967285]
-rotation = -1.5707964
-scale = Vector2(0.06, 0.06)
-remote_path = NodePath("../../../Visual")
-
-[node name="RemoteTransform2D2" type="RemoteTransform2D" parent="Turn/PathFollow2D" index="1" unique_id=67385874]
-remote_path = NodePath("../../../CollisionShape2D")

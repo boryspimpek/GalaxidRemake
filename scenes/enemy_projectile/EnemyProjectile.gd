@@ -57,22 +57,22 @@ func _physics_process(_delta):
 			if tx != 0:
 				if global_position.x > player.global_position.x:
 					if velocity.x > -float(tx):
-						velocity.x -= 1.0
+						velocity.x -= 1.0 * GameConstants.SCALE_FACTOR
 				else:
 					if velocity.x < float(tx):
-						velocity.x += 1.0
+						velocity.x += 1.0 * GameConstants.SCALE_FACTOR
 
 			# Homing Y
 			if ty != 0:
 				if global_position.y > player.global_position.y:
 					if velocity.y > -float(ty):
-						velocity.y -= 1.0
+						velocity.y -= 1.0 * GameConstants.SCALE_FACTOR
 				else:
 					if velocity.y < float(ty):
-						velocity.y += 1.0
+						velocity.y += 1.0 * GameConstants.SCALE_FACTOR
 
-	var move_x = velocity.x
-	var move_y = velocity.y
+	var move_x = velocity.x * GameConstants.SCALE_FACTOR
+	var move_y = velocity.y * GameConstants.SCALE_FACTOR
 
 	position.x += move_x	
 	position.y += move_y	

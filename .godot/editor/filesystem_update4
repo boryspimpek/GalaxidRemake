@@ -1,2 +1,5 @@
 res://scenes/world/LevelManager.gd
 res://scripts/core/GameConstants.gd
+res://scenes/enemy_projectile/EnemyProjectile.gd
+res://scenes/enemies/Enemy_005.tscn
+res://scenes/enemies/Enemy_012.tscn
